@@ -1,6 +1,5 @@
 const checkLength = (txt, qnt) => txt.length > qnt;
 
-// функция проверки слова на полиндром
 const checkPolindrom = (word) => {
   const limit = Math.trunc(word.length / 2);
   let updatedWord = word.toLowerCase();
