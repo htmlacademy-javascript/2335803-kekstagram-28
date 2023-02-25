@@ -1,10 +1,8 @@
 const checkLength = (txt, qnt) => txt.length > qnt;
 
-// функция проверки слова на полиндром
 const checkPolindrom = (word) => {
   const limit = Math.trunc(word.length / 2);
-  let updatedWord = word.toLowerCase();
-  updatedWord = updatedWord.replaceAll(' ', '');
+  const updatedWord = word.toLowerCase().replaceAll(' ', '');
   for (let i = 0; i < limit; i ++) {
     if (updatedWord.at(i) !== updatedWord.at(-(i + 1))) {
       return false;
@@ -33,11 +31,8 @@ const completeString = (oldString, minLength, additionalString) => {
 
   for (let i = 0; i < numberRemainingSymbols; i += additionalString.length) {
     const difference = numberRemainingSymbols - i;
-    if (additionalString.length <= difference) {
-      newString = `${additionalString}${newString}`;
-    } else {
-      newString = `${additionalString.at(0, difference - 1)}${newString}`;
-    }
+    newString = (additionalString.length <= difference) ? `${additionalString}${newString}` :
+      `${additionalString.at(0, difference - 1)}${newString}`;
   }
   return `${newString}${oldString}`;
 };
