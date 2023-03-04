@@ -8,7 +8,7 @@ const generateRandomNumber = (firstValue, secondValue) => {
 const createIdGenerator = () => {
   let lastGeneratedId = 0;
 
-  return function () {
+  return () => {
     lastGeneratedId ++;
     return lastGeneratedId ;
   };
