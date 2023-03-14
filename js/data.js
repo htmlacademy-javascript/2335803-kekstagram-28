@@ -1,4 +1,4 @@
-import {createIdGenerator, createRandomIdFromGenerator, generateRandomNumber} from './utils';
+import {createIdGenerator, createRandomIdFromGenerator, generateRandomNumber} from './utils.js';
 
 const DESCRIPTIONS = ['Я', 'Он', 'Отвратительный вид', 'Плохой друг', 'Какой-то челик', 'Закат', 'Тонущий корабль', 'Все кто меня бесят',
   'Кучка гавнюков!!!!', 'Клёвый кот', 'Здесь лежит труп', 'Мои гразные носки'];

@@ -1,1 +1,2 @@
-import {createPhotoObjects} from './data';
+import './data.js';
+import './thumbnails.js';
