@@ -7,15 +7,19 @@ const pictureTemplate = document.querySelector('#picture')
   .querySelector('.picture');
 const listPicturesFragment = document.createDocumentFragment();
 
-createdPhotoObjects.forEach(({url, comments, likes}) => {
+const createNewPicture = (url, comments, likes) => {
   const newPictureTemplate = pictureTemplate.cloneNode(true);
-  const pictureImg = newPictureTemplate.querySelector('.picture__img');
-  const pictureComments = pictureTemplate.querySelector('.picture__comments');
-  const pictureLikes = pictureTemplate.querySelector('.picture__likes');
-  pictureImg.src = url;
-  pictureComments.textContent = comments;
-  pictureLikes.textContent = likes;
-  listPicturesFragment.appendChild(newPictureTemplate);
-});
+  const pictureImg = newPictureTemplate.querySelector('.picture__img').src = url;
+  const pictureComments = pictureTemplate.querySelector('.picture__comments').textContent = comments;
+  const pictureLikes = pictureTemplate.querySelector('.picture__likes').textContent = likes;
+  return newPictureTemplate;
+};
 
-picturesContainer.appendChild(listPicturesFragment);
+const renderAllPictures = () => {
+  createdPhotoObjects.forEach(({url, comments, likes}) => {
+    listPicturesFragment.appendChild(createNewPicture(url, comments, likes));
+  });
+  picturesContainer.appendChild(listPicturesFragment);
+};
+
+export {renderAllPictures};
