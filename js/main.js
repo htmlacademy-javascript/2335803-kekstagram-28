@@ -1,4 +1,4 @@
-import {createPhotoObjects} from './data.js';
+import {photoObjects} from './data.js';
 import {renderAllPictures} from './thumbnails.js';
 
-renderAllPictures ();
+renderAllPictures (photoObjects);
