@@ -29,4 +29,13 @@ const createRandomIdFromGenerator = (firstValue, secondValue) => {
   };
 };
 
-export{generateRandomNumber, createIdGenerator, createRandomIdFromGenerator};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const createElement = (tagName, className) => {
+  const newElement = document.createElement(tagName);
+  newElement.classList.add(className);
+  return newElement;
+};
+
+export{generateRandomNumber, createIdGenerator, createRandomIdFromGenerator,
+  isEscapeKey, createElement};
