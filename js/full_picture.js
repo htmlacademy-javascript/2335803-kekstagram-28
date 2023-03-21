@@ -23,12 +23,28 @@ const renderBigPictureComments = (commentsContainer) => {
   bigPictureSocial.appendChild(allBigPictureComments);
 };
 
+const getClickedPicture = (photoObjects, element) => {
+  let picture;
+  if (element.classList.value === 'picture__comments' || element.classList.value === 'picture__likes') {
+    const thumbnailPicture = element.parentNode.parentNode;
+    const thumbnailPictureId = thumbnailPicture.querySelector('.picture__img').id;
+    picture = photoObjects.find((photoObject) => thumbnailPictureId.includes(photoObject.id));
+  } else if (element.classList.value === 'picture__info') {
+    const thumbnailPicture = element.parentNode;
+    const thumbnailPictureId = thumbnailPicture.querySelector('.picture__img').id;
+    picture = photoObjects.find((photoObject) => thumbnailPictureId.includes(photoObject.id));
+  } else {
+    picture = photoObjects.find((photoObject) =>element.id.includes(photoObject.id));
+  }
+  return picture;
+};
+
 const onPictureOpenClick = (photoObjects, evt) => {
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
   document.querySelector('body').classList.add('modal-open');
 
-  const picture = photoObjects.find((photoObject) =>evt.target.id.includes(photoObject.id));
+  const picture = getClickedPicture(photoObjects, evt.target);
   bigPicture.querySelector('img').src = picture.url;
   bigPicture.querySelector('.likes-count').textContent = picture.likes;
   bigPicture.querySelector('.social__caption').textContent = picture.description;
