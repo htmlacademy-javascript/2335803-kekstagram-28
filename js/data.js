@@ -34,5 +34,5 @@ const createPhotoObject = () => ({
 });
 
 const createPhotoObjects = () => Array.from({length: BORDER_NUMBER}, createPhotoObject);
-
-export {createPhotoObjects};
+const photoObjects = createPhotoObjects();
+export {photoObjects};
