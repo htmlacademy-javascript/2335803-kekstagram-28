@@ -24,19 +24,9 @@ const renderBigPictureComments = (commentsContainer) => {
 };
 
 const getClickedPicture = (photoObjects, element) => {
-  let picture;
-  if (element.classList.value === 'picture__comments' || element.classList.value === 'picture__likes') {
-    const thumbnailPicture = element.parentNode.parentNode;
-    const thumbnailPictureId = thumbnailPicture.querySelector('.picture__img').id;
-    picture = photoObjects.find((photoObject) => thumbnailPictureId.includes(photoObject.id));
-  } else if (element.classList.value === 'picture__info') {
-    const thumbnailPicture = element.parentNode;
-    const thumbnailPictureId = thumbnailPicture.querySelector('.picture__img').id;
-    picture = photoObjects.find((photoObject) => thumbnailPictureId.includes(photoObject.id));
-  } else {
-    picture = photoObjects.find((photoObject) =>element.id.includes(photoObject.id));
-  }
-  return picture;
+  const picture = element.closest('.picture');
+  const photoObject = photoObjects.find((object) => picture.id.includes(object.id));
+  return photoObject;
 };
 
 const onPictureOpenClick = (photoObjects, evt) => {

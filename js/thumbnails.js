@@ -6,8 +6,8 @@ const listPicturesFragment = document.createDocumentFragment();
 
 const createNewPicture = (id, url, comments, likes) => {
   const newPictureTemplate = pictureTemplate.cloneNode(true);
+  newPictureTemplate.id = id;
   newPictureTemplate.querySelector('.picture__img').src = url;
-  newPictureTemplate.querySelector('.picture__img').id = id;
   newPictureTemplate.querySelector('.picture__comments').textContent = comments.length;
   newPictureTemplate.querySelector('.picture__likes').textContent = likes;
   return newPictureTemplate;
