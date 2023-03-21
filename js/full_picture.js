@@ -25,8 +25,7 @@ const renderBigPictureComments = (commentsContainer) => {
 
 const getClickedPicture = (photoObjects, element) => {
   const picture = element.closest('.picture');
-  const photoObject = photoObjects.find((object) => picture.id.includes(object.id));
-  return photoObject;
+  return photoObjects.find((object) => picture.id.includes(object.id));
 };
 
 const onPictureOpenClick = (photoObjects, evt) => {
