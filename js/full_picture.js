@@ -55,7 +55,7 @@ document.addEventListener('keydown', (evt) => {
 });
 
 const renderFullPicture = (photoObjects) => allRenderedPictures.addEventListener('click', (evt) => {
-  if (evt.target.classList[0] === 'picture__img') {
+  if (evt.target.closest('.picture')) {
     onPictureOpenClick(photoObjects, evt);
     hideFullPicture();
   }

@@ -1,5 +1,3 @@
-import {PICTURE_EFFECTS_TYPES} from './data.js';
-
 const effectsContainer = document.querySelector('.img-upload')
   .querySelector('.effects');
 const newPicturePreview = document.querySelector('.img-upload')
@@ -26,17 +24,12 @@ const changeEffectValue = () => {
 };
 
 const onButtonApllyEffect = (evt) => {
-  const effectType = evt.target.id;
-  const allClasses = newPicturePreview.classList;
-  for (const className of allClasses) {
-    if (className.includes('effects__preview')) {
-      newPicturePreview.classList.remove(className);
-    }
-  }
-  newPicturePreview.classList.add(PICTURE_EFFECTS_TYPES[effectType]);
+  newPicturePreview.className = `img-upload__preview effects__preview--${evt.target.value}`;
 };
 
 const applyPictureEffect = () => effectsContainer.addEventListener('change', (evt) => {
+  evt.preventDefault();
+
   onButtonApllyEffect (evt);
 });
 

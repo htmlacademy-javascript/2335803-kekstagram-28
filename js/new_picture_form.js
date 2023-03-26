@@ -1,6 +1,7 @@
 import {isEscapeKey} from './utils.js';
 import {checkNewPictureForm} from './validation_new_picture_form.js';
 import {applyPictureEffect, changeEffectValue} from './new_picture_effects.js';
+import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP} from './data.js';
 
 const newPictureUpload = document.querySelector('.img-upload');
 const effectNone = newPictureUpload.querySelector('#effect-none');
@@ -36,8 +37,9 @@ document.addEventListener('keydown', (evt) => {
 const onButtonChangeScale = (evt) => {
   const previousScaleValue = parseInt(scaleControlValue.value.match(/\d+/), 10);
   let newScaleValue;
-  if ((previousScaleValue === 25 && evt.target.textContent === 'Уменьшить') ||
-  (previousScaleValue === 100 && evt.target.textContent === 'Увеличить')) {
+
+  if ((previousScaleValue === SCALE_MIN_VALUE && evt.target.textContent === SCALE_VALUE_DOWN) ||
+  (previousScaleValue === SCALE_MAX_VALUE && evt.target.textContent === SCALE_VALUE_UP)) {
     return;
   }
   switch (evt.target.textContent) {

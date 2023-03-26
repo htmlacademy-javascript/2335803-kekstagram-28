@@ -12,13 +12,13 @@ const MESSAGES = ['Всё отлично!', 'В целом всё неплохо
 const NAMES = ['Боб', 'Уолтер', 'Джесси', 'Памела', 'Ребека', 'Сьюзан', 'Рекс', 'Ким Чен Ын', 'Абу', 'Чендлер', 'Моника',
   'Росс', 'Фиби', 'Сол Гудман', 'Амояк', 'Боб младший', 'Джесика', 'Леонардо', 'Томас', 'Крокет', 'Бони', 'Клайд', 'Пушок', 'Кекс', 'Олег'];
 
-const PICTURE_EFFECTS_TYPES = {
-  'effect-chrome': 'effects__preview--chrome', 'effect-sepia': 'effects__preview--sepia',
-  'effect-marvin': 'effects__preview--marvin', 'effect-phobos': 'effects__preview--phobos',
-  'effect-heat': 'effects__preview--heat'
-};
-
 const BORDER_NUMBER = 25;
+const MAX_COMMENT_LENGTH = 140;
+const SCALE_VALUE_UP = 'Увеличить';
+const SCALE_VALUE_DOWN = 'Уменьшить';
+const SCALE_MAX_VALUE = 100;
+const SCALE_MIN_VALUE = 25;
+const MAX_HASHTAGS_QUANTITY = 5;
 const getPhotoId = createRandomIdFromGenerator(1, BORDER_NUMBER);
 const getPhotoUrl = createRandomIdFromGenerator(1, BORDER_NUMBER);
 const getCommentId = createIdGenerator();
@@ -41,4 +41,5 @@ const createPhotoObject = () => ({
 
 const createPhotoObjects = () => Array.from({length: BORDER_NUMBER}, createPhotoObject);
 const photoObjects = createPhotoObjects();
-export {photoObjects, PICTURE_EFFECTS_TYPES};
+export {photoObjects, MAX_COMMENT_LENGTH, SCALE_MAX_VALUE, SCALE_MIN_VALUE,
+  SCALE_VALUE_DOWN, SCALE_VALUE_UP, MAX_HASHTAGS_QUANTITY};

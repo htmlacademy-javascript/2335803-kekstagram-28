@@ -1,3 +1,5 @@
+import {MAX_COMMENT_LENGTH, MAX_HASHTAGS_QUANTITY} from './data.js';
+
 const newPictureForm = document.querySelector('.img-upload__form');
 
 const pristine = new Pristine (newPictureForm, {
@@ -24,29 +26,28 @@ const onSubmitForm = (evt) => {
   }
 };
 
-const validateHashtagsLength = (value) => value.split(' ').length < 3;
+const validateHashtagsLength = (value) => value.split(' ').length < MAX_HASHTAGS_QUANTITY;
 const validateHashtagsCorrect = (value) => {
   const tagList = value.split(' ');
-  const repliedTagList = [];
+  const repliedTagList = new Set();
   if (!value) {
     return true;
   }
   for (let tag of tagList) {
     tag = tag.toLowerCase();
-    if (!tag.match(/^#[a-zа-яё0-9]{1,19}$/)) {
-      return false;
-    } else if (repliedTagList.includes(tag)) {
+    const regExp = /^#[a-zа-яё0-9]{1,19}$/;
+    if (!tag.match(regExp)) {
       return false;
     }
-    repliedTagList.push(tag);
+    repliedTagList.add(tag);
   }
-  return true;
+  return Array.from(repliedTagList).length === tagList.length;
 };
 
-const validateComentCorrect = (value) => value.length <= 140;
+const validateComentCorrect = (value) => value.length <= MAX_COMMENT_LENGTH;
 
-pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsLength, 'Кол-во хеш-тегов должно быть не более 5');
-pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsCorrect, 'Каждый хэштег должен начинаться c символа #');
+pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsLength, 'Кол-во хеш-тегов не более 5');
+pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsCorrect, ' - Каждый хэштег должен начинается c символа #;\n - Хеш-теги не должны повторяться (регистр не имеет значения);\n - Максимальная длина хэш-тега 19 символов;\n - Хеш-тег может состоять только из цифр и букв');
 pristine.addValidator(newPictureForm.querySelector('#description'), validateComentCorrect, 'Комментарий не должен состоять из более чем 140 символов');
 
 const checkNewPictureForm = () => newPictureForm.addEventListener('submit', (evt) => {
