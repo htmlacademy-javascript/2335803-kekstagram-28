@@ -1,7 +1,7 @@
 import {isEscapeKey} from './utils.js';
 import {checkNewPictureForm} from './validation_new_picture_form.js';
-import {applyPictureEffect, changeEffectValue} from './new_picture_effects.js';
-import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP} from './data.js';
+import {applyPictureEffect} from './new_picture_effects.js';
+import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
 
 const newPictureUpload = document.querySelector('.img-upload');
 const effectNone = newPictureUpload.querySelector('#effect-none');
@@ -9,8 +9,10 @@ const uploadFileButton = newPictureUpload.querySelector('#upload-file');
 const newPictureWindow = newPictureUpload.querySelector('.img-upload__overlay');
 const newPicureCancelButton = newPictureUpload.querySelector('.img-upload__cancel');
 const scaleControl = newPictureUpload.querySelector('.img-upload__scale');
-const newPicturePreview = newPictureUpload.querySelector('.img-upload__preview');
+const newPicturePreview = newPictureUpload.querySelector('.img-upload__preview')
+  .querySelector('img');
 const scaleControlValue = scaleControl.querySelector('.scale__control--value');
+const sliderContainer = document.querySelector('.img-upload__effect-level');
 
 
 const openNewPictureForm = () => {
@@ -21,9 +23,12 @@ const openNewPictureForm = () => {
 const onButtonCloseClick = () => {
   document.querySelector('body').classList.remove('modal-open');
   newPictureWindow.classList.add('hidden');
-  newPicturePreview.classList.value = 'img-upload__preview';
+  newPicturePreview.removeAttribute('class');
+  newPicturePreview.removeAttribute('style');
+  sliderContainer.classList.add('hidden');
   scaleControlValue.value = '100%';
   effectNone.checked = true;
+  uploadFileButton.value = '';
 };
 
 const hideNewPictureForm = () => newPicureCancelButton.addEventListener('click', onButtonCloseClick);
@@ -37,17 +42,14 @@ document.addEventListener('keydown', (evt) => {
 const onButtonChangeScale = (evt) => {
   const previousScaleValue = parseInt(scaleControlValue.value.match(/\d+/), 10);
   let newScaleValue;
-
-  if ((previousScaleValue === SCALE_MIN_VALUE && evt.target.textContent === SCALE_VALUE_DOWN) ||
-  (previousScaleValue === SCALE_MAX_VALUE && evt.target.textContent === SCALE_VALUE_UP)) {
-    return;
-  }
   switch (evt.target.textContent) {
-    case 'Увеличить':
-      newScaleValue = previousScaleValue + 25;
+    case SCALE_VALUE_UP:
+      newScaleValue = previousScaleValue + SCALE_CHANGING_STEP > SCALE_MAX_VALUE ?
+        SCALE_MAX_VALUE : previousScaleValue + SCALE_CHANGING_STEP;
       break;
-    case 'Уменьшить':
-      newScaleValue = previousScaleValue - 25;
+    case SCALE_VALUE_DOWN:
+      newScaleValue = previousScaleValue - SCALE_CHANGING_STEP < SCALE_MIN_VALUE ?
+        SCALE_MIN_VALUE : previousScaleValue - SCALE_CHANGING_STEP;
       break;
     default:
       return;
@@ -67,7 +69,6 @@ const renderNewPictureForm = () => uploadFileButton.addEventListener('input', ()
   applyPictureEffect ();
   hideNewPictureForm();
   checkNewPictureForm ();
-  changeEffectValue ();
 });
 
 export {renderNewPictureForm};

@@ -1,4 +1,6 @@
-import {MAX_COMMENT_LENGTH, MAX_HASHTAGS_QUANTITY} from './data.js';
+import {MAX_COMMENT_LENGTH, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
+  ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
+  ERROR_MESSAGE_HASHTAGS_UNIQUE} from './data.js';
 
 const newPictureForm = document.querySelector('.img-upload__form');
 
@@ -27,28 +29,19 @@ const onSubmitForm = (evt) => {
 };
 
 const validateHashtagsLength = (value) => value.split(' ').length < MAX_HASHTAGS_QUANTITY;
-const validateHashtagsCorrect = (value) => {
+const validateHashtagsCorrect = (value) => value.split(' ').every((tag) => tag.match(REG_EXP_HASHTAG)) || !value;
+const validateHashtagsUnique = (value) => {
   const tagList = value.split(' ');
-  const repliedTagList = new Set();
-  if (!value) {
-    return true;
-  }
-  for (let tag of tagList) {
-    tag = tag.toLowerCase();
-    const regExp = /^#[a-zа-яё0-9]{1,19}$/;
-    if (!tag.match(regExp)) {
-      return false;
-    }
-    repliedTagList.add(tag);
-  }
+  const repliedTagList = new Set(tagList.map((tag) => tag.toLowerCase()));
   return Array.from(repliedTagList).length === tagList.length;
 };
 
 const validateComentCorrect = (value) => value.length <= MAX_COMMENT_LENGTH;
 
-pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsLength, 'Кол-во хеш-тегов не более 5');
-pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsCorrect, ' - Каждый хэштег должен начинается c символа #;\n - Хеш-теги не должны повторяться (регистр не имеет значения);\n - Максимальная длина хэш-тега 19 символов;\n - Хеш-тег может состоять только из цифр и букв');
-pristine.addValidator(newPictureForm.querySelector('#description'), validateComentCorrect, 'Комментарий не должен состоять из более чем 140 символов');
+pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsLength, ERROR_MESSAGE_HASHTAGS_LENGTH);
+pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsCorrect, ERROR_MESSAGE_HASHTAGS_CORRECT);
+pristine.addValidator(newPictureForm.querySelector('#hashtags'), validateHashtagsUnique, ERROR_MESSAGE_HASHTAGS_UNIQUE);
+pristine.addValidator(newPictureForm.querySelector('#description'), validateComentCorrect, ERROR_MESSAGE_COMMENT_CORRECT);
 
 const checkNewPictureForm = () => newPictureForm.addEventListener('submit', (evt) => {
   onSubmitForm (evt);

@@ -696,6 +696,11 @@ main {
   border-radius: 5px;
 }
 
+.form__error {
+  color: red;
+  text-align: center
+}
+
 .text__description {
   width: 450px;
   height: 100px;
