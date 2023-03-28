@@ -1,6 +1,6 @@
 import {isEscapeKey} from './utils.js';
 import {checkNewPictureForm} from './validation_new_picture_form.js';
-import {applyPictureEffect, resetPictureEffect} from './new_picture_effects.js';
+import {applyPictureEffect, deletePictureEffect} from './new_picture_effects.js';
 import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
 
 const newPictureUpload = document.querySelector('.img-upload');
@@ -49,7 +49,7 @@ const onButtonCloseClick = () => {
   effectNone.checked = true;
   uploadFileButton.value = '';
   scaleControl.removeEventListener('click', onButtonChangeScale);
-  resetPictureEffect();
+  deletePictureEffect();
 };
 
 const addListeners = () => {
