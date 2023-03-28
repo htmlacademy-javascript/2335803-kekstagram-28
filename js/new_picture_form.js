@@ -1,6 +1,6 @@
 import {isEscapeKey} from './utils.js';
 import {checkNewPictureForm} from './validation_new_picture_form.js';
-import {applyPictureEffect} from './new_picture_effects.js';
+import {applyPictureEffect, resetPictureEffect} from './new_picture_effects.js';
 import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
 
 const newPictureUpload = document.querySelector('.img-upload');
@@ -19,25 +19,6 @@ const openNewPictureForm = () => {
   newPictureWindow.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
 };
-
-const onButtonCloseClick = () => {
-  document.querySelector('body').classList.remove('modal-open');
-  newPictureWindow.classList.add('hidden');
-  newPicturePreview.removeAttribute('class');
-  newPicturePreview.removeAttribute('style');
-  sliderContainer.classList.add('hidden');
-  scaleControlValue.value = '100%';
-  effectNone.checked = true;
-  uploadFileButton.value = '';
-};
-
-const hideNewPictureForm = () => newPicureCancelButton.addEventListener('click', onButtonCloseClick);
-document.addEventListener('keydown', (evt) => {
-  const activeElement = () => document.activeElement.id === 'description' || document.activeElement.id === 'hashtags';
-  if (isEscapeKey(evt) && !activeElement()) {
-    onButtonCloseClick();
-  }
-});
 
 const onButtonChangeScale = (evt) => {
   const previousScaleValue = parseInt(scaleControlValue.value.match(/\d+/), 10);
@@ -58,17 +39,35 @@ const onButtonChangeScale = (evt) => {
   scaleControlValue.value = `${newScaleValue}%`;
 };
 
+const onButtonCloseClick = () => {
+  document.querySelector('body').classList.remove('modal-open');
+  newPictureWindow.classList.add('hidden');
+  newPicturePreview.removeAttribute('class');
+  newPicturePreview.removeAttribute('style');
+  sliderContainer.classList.add('hidden');
+  scaleControlValue.value = '100%';
+  effectNone.checked = true;
+  uploadFileButton.value = '';
+  scaleControl.removeEventListener('click', onButtonChangeScale);
+  resetPictureEffect();
+};
 
-const changeNewPictureScale = () => scaleControl.addEventListener('click', (evt) => {
-  onButtonChangeScale (evt);
-});
+const addListeners = () => {
+  newPicureCancelButton.addEventListener('click', onButtonCloseClick);
+  document.addEventListener('keydown', (evt) => {
+    const activeElement = () => document.activeElement.id === 'description' || document.activeElement.id === 'hashtags';
+    if (isEscapeKey(evt) && !activeElement()) {
+      onButtonCloseClick();
+    }
+  });
+  scaleControl.addEventListener('click', onButtonChangeScale);
+};
 
 const renderNewPictureForm = () => uploadFileButton.addEventListener('input', () => {
   openNewPictureForm();
-  changeNewPictureScale ();
   applyPictureEffect ();
-  hideNewPictureForm();
   checkNewPictureForm ();
+  addListeners();
 });
 
 export {renderNewPictureForm};

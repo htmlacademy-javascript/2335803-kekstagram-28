@@ -8,6 +8,7 @@ const newPicturePreview = document.querySelector('.img-upload')
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const sliderElement = sliderContainer.querySelector('.effect-level__slider');
 const effectValue = sliderContainer.querySelector('.effect-level__value');
+let actualEffect = 'none';
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -39,20 +40,20 @@ const updateSlider = (evt) => {
 
 const onEffectSliderUpdate = () => {
   const sliderValue = sliderElement.noUiSlider.get();
-  const actualEffect = document.activeElement.value;
+  effectValue.value = sliderValue;
   newPicturePreview.style.filter = actualEffect === 'none' ?
     PICTURE_EFFECTS[actualEffect].style : `${PICTURE_EFFECTS[actualEffect].style}(${sliderValue}${PICTURE_EFFECTS[actualEffect].unit})`;
-  effectValue.value = sliderValue;
 };
+
+sliderElement.noUiSlider.on('update', onEffectSliderUpdate);
 
 const onButtonApllyEffect = (evt) => {
   newPicturePreview.className = `effects__preview--${evt.target.value}`;
+  actualEffect = evt.target.value;
+  updateSlider (evt);
 };
 
-const applyPictureEffect = () => effectsContainer.addEventListener('change', (evt) => {
-  updateSlider (evt);
-  onButtonApllyEffect (evt);
-  sliderElement.noUiSlider.on('update', onEffectSliderUpdate);
-});
+const applyPictureEffect = () => effectsContainer.addEventListener('change', onButtonApllyEffect);
+const resetPictureEffect = () => effectsContainer.removeEventListener('change', onButtonApllyEffect);
 
-export {applyPictureEffect};
+export {applyPictureEffect, resetPictureEffect};
