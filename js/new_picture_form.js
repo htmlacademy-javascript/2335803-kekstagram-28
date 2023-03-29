@@ -64,12 +64,6 @@ const addListeners = () => {
 };
 
 const renderNewPictureForm = () => uploadFileButton.addEventListener('input', () => {
-  // if (uploadFileButton.value.includes('.jpg')) {
-  //   openNewPictureForm();
-  //   applyPictureEffect ();
-  //   checkNewPictureForm ();
-  //   addListeners();
-  // }
   openNewPictureForm();
   applyPictureEffect ();
   checkNewPictureForm ();
