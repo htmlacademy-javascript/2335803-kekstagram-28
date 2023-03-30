@@ -56,4 +56,4 @@ const onButtonApllyEffect = (evt) => {
 const applyPictureEffect = () => effectsContainer.addEventListener('change', onButtonApllyEffect);
 const deletePictureEffect = () => effectsContainer.removeEventListener('change', onButtonApllyEffect);
 
-export {applyPictureEffect, deletePictureEffect};
+export {applyPictureEffect, deletePictureEffect };
