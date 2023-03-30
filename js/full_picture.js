@@ -25,7 +25,7 @@ const renderBigPictureComments = (commentsContainer) => {
 
 const getClickedPicture = (photoObjects, element) => {
   const picture = element.closest('.picture');
-  return photoObjects.find((object) => picture.id.includes(object.id));
+  return photoObjects.find((object) => Number(picture.id) === Number(object.id));
 };
 
 const onPictureOpenClick = (photoObjects, evt) => {
@@ -55,8 +55,10 @@ document.addEventListener('keydown', (evt) => {
 });
 
 const renderFullPicture = (photoObjects) => allRenderedPictures.addEventListener('click', (evt) => {
-  onPictureOpenClick(photoObjects, evt);
-  hideFullPicture();
+  if (evt.target.closest('.picture')) {
+    onPictureOpenClick(photoObjects, evt);
+    hideFullPicture();
+  }
 });
 
 export {renderFullPicture};
