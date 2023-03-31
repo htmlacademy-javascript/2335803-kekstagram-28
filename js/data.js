@@ -70,9 +70,24 @@ const PICTURE_EFFECTS = {
   }
 };
 
+const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+const ErrorText = {
+  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить странницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте отправить снова',
+};
+const MAIN_PAGE_PICTURES_COUNT = 25;
 const getPhotoId = createRandomIdFromGenerator(1, BORDER_NUMBER);
 const getPhotoUrl = createRandomIdFromGenerator(1, BORDER_NUMBER);
 const getCommentId = createIdGenerator();
+
 const createRandomComment = () => ({
   id: getCommentId(),
   avatar: `img/avatar-${generateRandomNumber(1, 6)}.svg`,
@@ -95,4 +110,4 @@ const photoObjects = createPhotoObjects();
 export {photoObjects, MAX_COMMENT_LENGTH, SCALE_MAX_VALUE, SCALE_MIN_VALUE, SCALE_CHANGING_STEP,
   SCALE_VALUE_DOWN, SCALE_VALUE_UP, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
   ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
-  ERROR_MESSAGE_HASHTAGS_UNIQUE, PICTURE_EFFECTS};
+  ERROR_MESSAGE_HASHTAGS_UNIQUE, PICTURE_EFFECTS, BASE_URL, Method, Route, ErrorText, MAIN_PAGE_PICTURES_COUNT};

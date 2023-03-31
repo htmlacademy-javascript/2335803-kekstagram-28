@@ -3,6 +3,7 @@ import {checkNewPictureForm} from './validation_new_picture_form.js';
 import {applyPictureEffect, deletePictureEffect} from './new_picture_effects.js';
 import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
 
+
 const newPictureUpload = document.querySelector('.img-upload');
 const effectNone = newPictureUpload.querySelector('#effect-none');
 const uploadFileButton = newPictureUpload.querySelector('#upload-file');
@@ -13,6 +14,8 @@ const newPicturePreview = newPictureUpload.querySelector('.img-upload__preview')
   .querySelector('img');
 const scaleControlValue = scaleControl.querySelector('.scale__control--value');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
+const hashtagsTextArea = newPictureUpload.querySelector('.text__hashtags');
+const commentTextarea = newPictureUpload.querySelector('.text__description');
 
 
 const openNewPictureForm = () => {
@@ -50,6 +53,8 @@ const onButtonCloseClick = () => {
   uploadFileButton.value = '';
   scaleControl.removeEventListener('click', onButtonChangeScale);
   deletePictureEffect();
+  hashtagsTextArea.value = '';
+  commentTextarea.value = '';
 };
 
 const addListeners = () => {
@@ -70,4 +75,4 @@ const renderNewPictureForm = () => uploadFileButton.addEventListener('input', ()
   addListeners();
 });
 
-export {renderNewPictureForm};
+export {renderNewPictureForm, onButtonCloseClick};
