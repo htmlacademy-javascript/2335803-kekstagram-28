@@ -1,7 +1,7 @@
 import {MAX_COMMENT_LENGTH, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
   ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
   ERROR_MESSAGE_HASHTAGS_UNIQUE} from './data.js';
-import {sendData} from './server_api.js';
+import {sendData} from './api.js';
 import {onButtonCloseClick} from './new_picture_form.js';
 import {isEscapeKey} from './utils.js';
 
@@ -35,49 +35,49 @@ newPictureForm.addEventListener('focusout', () => {
   pristine.reset();
 });
 
-const blockSubmitButton = () => {
-  uploadButton.disabled = true;
-  document.body.appendChild(loadingMessageTemplate);
-};
-
-const onCloseMessageEscape = () => {
-  if (isEscapeKey) {
-    // eslint-disable-next-line no-use-before-define
-    onCloseNotification ();
+const blockSubmitButton = (buttonState) => {
+  uploadButton.disabled = buttonState;
+  if (buttonState) {
+    document.body.appendChild(loadingMessageTemplate);
+  } else {
+    loadingMessageTemplate.parentNode.removeChild(loadingMessageTemplate);
   }
 };
 
-const onCloseNotification = () => {
-  notificationMesageElement.parentNode.removeChild(notificationMesageElement);
-  document.removeEventListener('click', onCloseNotification);
-  document.removeEventListener('keydown', onCloseMessageEscape);
-};
-
-const unblockSubmitButton = () => {
-  loadingMessageTemplate.parentNode.removeChild(loadingMessageTemplate);
-  uploadButton.disabled = false;
-  onButtonCloseClick();
+const onCloseNotification = (evt) => {
+  if (isEscapeKey(evt) || evt.target.className.includes('success' || 'error')) {
+    notificationMesageElement.parentNode.removeChild(notificationMesageElement);
+    document.removeEventListener('click', onCloseNotification);
+    document.removeEventListener('keydown', onCloseNotification);
+  }
 };
 
 const showUploadingMessage = (notificationMessage) => {
   document.body.appendChild(notificationMessage);
   notificationMesageElement = notificationMessage;
   document.addEventListener('click', onCloseNotification);
-  document.addEventListener('keydown', onCloseMessageEscape);
+  document.addEventListener('keydown', onCloseNotification);
+  if (notificationMesageElement.className === 'success') {
+    onButtonCloseClick();
+  }
 };
 
 const onSubmitForm = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    blockSubmitButton ();
+    blockSubmitButton (true);
     sendData(new FormData(evt.target))
-      .then(showUploadingMessage (successUploadingMessage))
+      .then((response) => {
+        if (response) {
+          showUploadingMessage (successUploadingMessage);
+        }
+      })
       .catch(
         () => {
           showUploadingMessage (errorUploadingMessage);
         }
       )
-      .finally(unblockSubmitButton ());
+      .finally(blockSubmitButton (false));
   }
 };
 
