@@ -11,21 +11,29 @@ const commentTemplate = document.querySelector('#comment')
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoaderButton = bigPicture.querySelector('.comments-loader');
 let displayedCommentsCount = 0;
-let fullPictureComments;
+let commentsContainer;
+
+const createCommentsElements = () => {
+  const allBigPictureComments = createElement('ul', 'social__comments');
+  let i = 0;
+  commentsContainer.forEach(({avatar, message, name}) => {
+    if (i === displayedCommentsCount - 1) {
+      return;
+    }
+    const newCommentTemplate = commentTemplate.cloneNode(true);
+    newCommentTemplate.querySelector('.social__picture').src = avatar;
+    newCommentTemplate.querySelector('.social__picture').alt = name;
+    newCommentTemplate.querySelector('.social__text').textContent = message;
+    allBigPictureComments.appendChild(newCommentTemplate);
+    i ++;
+  });
+  return allBigPictureComments;
+};
 
 const renderBigPictureComments = () => {
   const previousComments = bigPicture.querySelector('.social__comments');
   previousComments.parentNode.removeChild(previousComments);
-  const allBigPictureComments = createElement('ul', 'social__comments');
-
-  for (let i = 0; i < displayedCommentsCount; i ++) {
-    const newCommentTemplate = commentTemplate.cloneNode(true);
-    newCommentTemplate.querySelector('.social__picture').src = fullPictureComments[i].avatar;
-    newCommentTemplate.querySelector('.social__picture').alt = fullPictureComments[i].name;
-    newCommentTemplate.querySelector('.social__text').textContent = fullPictureComments[i].message;
-    allBigPictureComments.appendChild(newCommentTemplate);
-  }
-  bigPictureSocial.appendChild(allBigPictureComments);
+  bigPictureSocial.insertBefore(createCommentsElements (), commentsLoaderButton);
 };
 
 const getClickedPicture = (photoObjects, element) => {
@@ -34,30 +42,27 @@ const getClickedPicture = (photoObjects, element) => {
 };
 
 const calculateCommentsQuantity = (allCommentsCount) => {
-  const commentsCountDescription = commentsCount.innerHTML.split(' ');
-
-  if (allCommentsCount < LIMIT_RENDER_COMMENTS) {
+  if (allCommentsCount < LIMIT_RENDER_COMMENTS || allCommentsCount - displayedCommentsCount < LIMIT_RENDER_COMMENTS) {
     displayedCommentsCount = allCommentsCount;
-  } else if (allCommentsCount - displayedCommentsCount < LIMIT_RENDER_COMMENTS) {
-    displayedCommentsCount = allCommentsCount;
+    commentsLoaderButton.classList.add('hidden');
   } else {
     displayedCommentsCount = displayedCommentsCount + LIMIT_RENDER_COMMENTS;
   }
-  commentsCountDescription[0] = displayedCommentsCount;
-  commentsCount.innerHTML = commentsCountDescription.join(' ');
+
+  commentsCount.innerHTML = `${displayedCommentsCount} из <span class="comments-count" id="comments-count">${allCommentsCount}</span> комментариев`;
 };
 
 const onPictureOpenClick = (photoObjects, evt) => {
-  document.querySelector('body').classList.add('modal-open');
-
   const picture = getClickedPicture(photoObjects, evt.target);
+
+  document.querySelector('body').classList.add('modal-open');
   bigPicture.querySelector('img').src = picture.url;
   bigPicture.querySelector('.likes-count').textContent = picture.likes;
   bigPicture.querySelector('.social__caption').textContent = picture.description;
-  fullPictureComments = picture.comments;
-  bigPicture.querySelector('.comments-count').textContent = fullPictureComments.length;
-  calculateCommentsQuantity (fullPictureComments.length);
-  renderBigPictureComments();
+  commentsContainer = picture.comments;
+  bigPicture.querySelector('.comments-count').textContent = commentsContainer.length;
+  calculateCommentsQuantity (commentsContainer.length);
+  renderBigPictureComments(commentsContainer);
   bigPicture.classList.remove('hidden');
 };
 
@@ -72,6 +77,7 @@ const onButtonCloseClick = () => {
   displayedCommentsCount = 0;
   bigPictureCancelButton.removeEventListener('click', onButtonCloseClick);
   commentsLoaderButton.removeEventListener('click', onButtonLoadMoreComments);
+  commentsLoaderButton.classList.remove('hidden');
 };
 
 document.addEventListener('keydown', (evt) => {
