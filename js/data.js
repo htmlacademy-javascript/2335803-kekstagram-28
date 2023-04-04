@@ -6,6 +6,7 @@ const SCALE_MAX_VALUE = 100;
 const SCALE_MIN_VALUE = 25;
 const MAX_HASHTAGS_QUANTITY = 5;
 const REG_EXP_HASHTAG = /^#[a-zA-Zа-яА-Яё0-9]{1,19}$/;
+const LIMIT_RENDER_COMMENTS = 5;
 const ERROR_MESSAGE_HASHTAGS_LENGTH = '<br>Кол-во хештегов не более 5';
 const ERROR_MESSAGE_HASHTAGS_CORRECT = '<br> - Хештег должен начинается c символа #;<br> - Максимальная длина хештега 19 символов;<br> - Хештег может состоять только из цифр и букв';
 const ERROR_MESSAGE_HASHTAGS_UNIQUE = '<br>Каждый хештег должен быть уникален (регистр не имеет значения)';
@@ -72,4 +73,4 @@ const ErrorText = {
 export {MAX_COMMENT_LENGTH, SCALE_MAX_VALUE, SCALE_MIN_VALUE, SCALE_CHANGING_STEP,
   SCALE_VALUE_DOWN, SCALE_VALUE_UP, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
   ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
-  ERROR_MESSAGE_HASHTAGS_UNIQUE, PICTURE_EFFECTS, BASE_URL, Method, Route, ErrorText};
+  ERROR_MESSAGE_HASHTAGS_UNIQUE, PICTURE_EFFECTS, BASE_URL, Method, Route, ErrorText, LIMIT_RENDER_COMMENTS};
