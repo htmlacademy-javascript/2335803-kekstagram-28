@@ -1,5 +1,6 @@
 import {renderAllPictures} from './thumbnails.js';
 import {createRandomIdFromGenerator, debounce} from './utils.js';
+import {DEBOUNCE_TIME_INTERVAL, RANDOM_PICTURES_FILTER_COUNT} from './data.js';
 
 const picturesFiltersContainer = document.querySelector('.img-filters');
 const picturesFiltersForm = picturesFiltersContainer.querySelector('.img-filters__form');
@@ -17,7 +18,7 @@ const cleanAllThumbnails = () => {
 const comparePictures = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
 const onFilterButtonClick = (evt) => {
-  const debounceDoRender = debounce(renderAllPictures, 500);
+  const debounceDoRender = debounce(renderAllPictures, DEBOUNCE_TIME_INTERVAL);
 
   if (previousFilterButton.id !== evt.target.id) {
     previousFilterButton.className = 'img-filters__button';
@@ -34,7 +35,7 @@ const onFilterButtonClick = (evt) => {
     case 'filter-random': {
       const randomArrayPictures = [];
       const randomId = createRandomIdFromGenerator(0, arrayPictures.length - 1);
-      for (let i = 0; i < 10; i ++) {
+      for (let i = 0; i < RANDOM_PICTURES_FILTER_COUNT; i ++) {
         randomArrayPictures.push(arrayPictures[randomId()]);
       }
       debounceDoRender(randomArrayPictures);
