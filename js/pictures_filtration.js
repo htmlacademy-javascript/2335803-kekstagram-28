@@ -17,9 +17,7 @@ const cleanAllThumbnails = () => {
 
 const comparePictures = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
-const onFilterButtonClick = (evt) => {
-  const debounceDoRender = debounce(renderAllPictures, DEBOUNCE_TIME_INTERVAL);
-
+const generateThumbnails = (evt) => {
   if (previousFilterButton.id !== evt.target.id) {
     previousFilterButton.className = 'img-filters__button';
     previousFilterButton = evt.target;
@@ -29,7 +27,7 @@ const onFilterButtonClick = (evt) => {
   cleanAllThumbnails ();
   switch (evt.target.id) {
     case 'filter-default': {
-      debounceDoRender (arrayPictures);
+      renderAllPictures (arrayPictures);
       break;
     }
     case 'filter-random': {
@@ -38,11 +36,11 @@ const onFilterButtonClick = (evt) => {
       for (let i = 0; i < RANDOM_PICTURES_FILTER_COUNT; i ++) {
         randomArrayPictures.push(arrayPictures[randomId()]);
       }
-      debounceDoRender(randomArrayPictures);
+      renderAllPictures (randomArrayPictures);
       break;
     }
     case 'filter-discussed': {
-      debounceDoRender (arrayPictures
+      renderAllPictures (arrayPictures
         .slice()
         .sort(comparePictures));
       break;
@@ -50,8 +48,15 @@ const onFilterButtonClick = (evt) => {
   }
 };
 
+const onFilterButtonClick = (evt) => {
+  if (evt.target.id) {
+    const debounceDoRender = debounce(generateThumbnails, DEBOUNCE_TIME_INTERVAL);
+    debounceDoRender(evt);
+  }
+};
+
 const renderPicturesFilters = (pictures) => {
-  arrayPictures = pictures;
+  arrayPictures = pictures.slice();
   picturesFiltersContainer.classList.remove('img-filters--inactive');
   picturesFiltersForm.addEventListener('click', onFilterButtonClick);
 };
