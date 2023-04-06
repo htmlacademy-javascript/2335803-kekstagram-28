@@ -1,5 +1,36 @@
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+
+const generateRandomNumber = (firstValue, secondValue) => {
+  const lower = Math.min(firstValue, secondValue);
+  const upper = Math.max(firstValue, secondValue);
+  return Math.floor(Math.random() * (upper - lower + 1) + lower);
+};
+
+const createRandomIdFromGenerator = (firstValue, secondValue) => {
+  const previousValues = [];
+
+  return function () {
+    let newValue = generateRandomNumber(firstValue, secondValue);
+    if (previousValues.length >= (secondValue - firstValue + 1)) {
+      return;
+    }
+    while (previousValues.includes(newValue)) {
+      newValue = generateRandomNumber(firstValue, secondValue);
+    }
+    previousValues.push(newValue);
+    return newValue;
+  };
+};
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 const createElement = (tagName, className) => {
   const newElement = document.createElement(tagName);
   newElement.classList.add(className);
@@ -28,4 +59,4 @@ const showAllert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export{isEscapeKey, createElement, showAllert};
+export{isEscapeKey, createElement, showAllert, createRandomIdFromGenerator, debounce};
