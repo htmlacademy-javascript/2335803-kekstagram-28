@@ -2,6 +2,7 @@ import {isEscapeKey} from './utils.js';
 import {checkNewPictureForm} from './validation_new_picture_form.js';
 import {applyPictureEffect, deletePictureEffect} from './new_picture_effects.js';
 import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
+import {renderNewImage} from './new_picture_preview.js';
 
 
 const newPictureUpload = document.querySelector('.img-upload');
@@ -70,8 +71,9 @@ const addListeners = () => {
 
 const renderNewPictureForm = () => uploadFileButton.addEventListener('input', () => {
   openNewPictureForm();
-  applyPictureEffect ();
-  checkNewPictureForm ();
+  applyPictureEffect();
+  checkNewPictureForm();
+  renderNewImage();
   addListeners();
 });
 
