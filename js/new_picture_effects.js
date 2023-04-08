@@ -1,4 +1,4 @@
-import {PICTURE_EFFECTS} from './data.js';
+import {pictureEffects} from './data.js';
 
 const effectsContainer = document.querySelector('.img-upload')
   .querySelector('.effects');
@@ -21,7 +21,7 @@ noUiSlider.create(sliderElement, {
 });
 
 const updateSlider = (evt) => {
-  const actualEffectSettings = PICTURE_EFFECTS[evt.target.value];
+  const actualEffectSettings = pictureEffects[evt.target.value.toUpperCase()];
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: actualEffectSettings.min,
@@ -42,7 +42,8 @@ const onEffectSliderUpdate = () => {
   const sliderValue = sliderElement.noUiSlider.get();
   effectValue.value = sliderValue;
   newPicturePreview.style.filter = actualEffect === 'none' ?
-    PICTURE_EFFECTS[actualEffect].style : `${PICTURE_EFFECTS[actualEffect].style}(${sliderValue}${PICTURE_EFFECTS[actualEffect].unit})`;
+    pictureEffects[actualEffect.toUpperCase()].style :
+    `${pictureEffects[actualEffect.toUpperCase()].style}(${sliderValue}${pictureEffects[actualEffect.toUpperCase()].unit})`;
 };
 
 sliderElement.noUiSlider.on('update', onEffectSliderUpdate);
