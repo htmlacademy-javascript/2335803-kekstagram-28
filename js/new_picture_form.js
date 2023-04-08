@@ -1,7 +1,8 @@
 import {isEscapeKey} from './utils.js';
-import {checkNewPictureForm} from './validation_new_picture_form.js';
+import {checkNewPictureForm, onCloseNotification, onSubmitForm} from './validation_new_picture_form.js';
 import {applyPictureEffect, deletePictureEffect} from './new_picture_effects.js';
 import {SCALE_MAX_VALUE, SCALE_VALUE_DOWN, SCALE_MIN_VALUE, SCALE_VALUE_UP, SCALE_CHANGING_STEP} from './data.js';
+import {renderNewImage} from './new_picture_preview.js';
 
 
 const newPictureUpload = document.querySelector('.img-upload');
@@ -16,6 +17,7 @@ const scaleControlValue = scaleControl.querySelector('.scale__control--value');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const hashtagsTextArea = newPictureUpload.querySelector('.text__hashtags');
 const commentTextarea = newPictureUpload.querySelector('.text__description');
+const newPictureForm = document.querySelector('.img-upload__form');
 
 
 const openNewPictureForm = () => {
@@ -42,7 +44,7 @@ const onButtonChangeScale = (evt) => {
   scaleControlValue.value = `${newScaleValue}%`;
 };
 
-const onButtonCloseClick = () => {
+const onButtonFormCloseClick = () => {
   document.querySelector('body').classList.remove('modal-open');
   newPictureWindow.classList.add('hidden');
   newPicturePreview.removeAttribute('class');
@@ -57,22 +59,31 @@ const onButtonCloseClick = () => {
   commentTextarea.value = '';
 };
 
+const onEscapeCloseForm = (evt) => {
+  const activeElement = () => document.activeElement.id === 'description' || document.activeElement.id === 'hashtags';
+  if (isEscapeKey(evt) && !activeElement()) {
+    onButtonFormCloseClick();
+  }
+};
+
 const addListeners = () => {
-  newPicureCancelButton.addEventListener('click', onButtonCloseClick);
-  document.addEventListener('keydown', (evt) => {
-    const activeElement = () => document.activeElement.id === 'description' || document.activeElement.id === 'hashtags';
-    if (isEscapeKey(evt) && !activeElement()) {
-      onButtonCloseClick();
-    }
-  });
+  newPicureCancelButton.addEventListener('click', onButtonFormCloseClick);
+  document.addEventListener('keydown', onEscapeCloseForm);
   scaleControl.addEventListener('click', onButtonChangeScale);
+};
+
+const removeListeners = () => {
+  document.removeEventListener('click', onCloseNotification);
+  document.removeEventListener('keydown', onCloseNotification);
+  newPictureForm.removeEventListener('submit', onSubmitForm);
 };
 
 const renderNewPictureForm = () => uploadFileButton.addEventListener('input', () => {
   openNewPictureForm();
-  applyPictureEffect ();
-  checkNewPictureForm ();
+  applyPictureEffect();
+  checkNewPictureForm();
+  renderNewImage();
   addListeners();
 });
 
-export {renderNewPictureForm, onButtonCloseClick};
+export {renderNewPictureForm, onButtonFormCloseClick, onEscapeCloseForm, removeListeners};
