@@ -11,43 +11,43 @@ const ERROR_MESSAGE_HASHTAGS_LENGTH = '<br>Кол-во хештегов не б�
 const ERROR_MESSAGE_HASHTAGS_CORRECT = '<br> - Хештег должен начинается c символа #;<br> - Максимальная длина хештега 19 символов;<br> - Хештег может состоять только из цифр и букв';
 const ERROR_MESSAGE_HASHTAGS_UNIQUE = '<br>Каждый хештег должен быть уникален (регистр не имеет значения)';
 const ERROR_MESSAGE_COMMENT_CORRECT = '<br>Комментарий не должен состоять из более чем 140 символов';
-const PICTURE_EFFECTS = {
-  'none': {
+const pictureEffects = {
+  'NONE': {
     style: 'none',
     min: 0,
     max: 0,
     step: 0,
     unit: '',
   },
-  'chrome': {
+  'CHROME': {
     style: 'grayscale',
     min: 0,
     max: 1,
     step: 0.1,
     unit: '',
   },
-  'sepia': {
+  'SEPIA': {
     style: 'sepia',
     min: 0,
     max: 1,
     step: 0.1,
     unit: '',
   },
-  'marvin': {
+  'MARVIN': {
     style: 'invert',
     min: 0,
     max: 100,
     step: 1,
     unit: '%',
   },
-  'phobos': {
+  'PHOBOS': {
     style: 'blur',
     min: 0,
     max: 3,
     step: 0.1,
     unit: 'px',
   },
-  'heat': {
+  'HEAT': {
     style: 'brightness',
     min: 1,
     max: 3,
@@ -77,5 +77,5 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 export {MAX_COMMENT_LENGTH, SCALE_MAX_VALUE, SCALE_MIN_VALUE, SCALE_CHANGING_STEP,
   SCALE_VALUE_DOWN, SCALE_VALUE_UP, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
   ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
-  ERROR_MESSAGE_HASHTAGS_UNIQUE, PICTURE_EFFECTS, BASE_URL, Method, Route, ErrorText, LIMIT_RENDER_COMMENTS,
+  ERROR_MESSAGE_HASHTAGS_UNIQUE, pictureEffects, BASE_URL, Method, Route, ErrorText, LIMIT_RENDER_COMMENTS,
   DEBOUNCE_TIME_INTERVAL, RANDOM_PICTURES_FILTER_COUNT, FILE_TYPES};
