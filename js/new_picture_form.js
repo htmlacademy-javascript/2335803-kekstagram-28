@@ -18,7 +18,7 @@ const sliderContainer = document.querySelector('.img-upload__effect-level');
 const hashtagsTextArea = newPictureUpload.querySelector('.text__hashtags');
 const commentTextarea = newPictureUpload.querySelector('.text__description');
 const newPictureForm = document.querySelector('.img-upload__form');
-
+let notificationMesageElement;
 
 const openNewPictureForm = () => {
   newPictureWindow.classList.remove('hidden');
@@ -66,6 +66,19 @@ const onEscapeCloseForm = (evt) => {
   }
 };
 
+const showUploadingMessage = (notificationMessage) => {
+  document.body.appendChild(notificationMessage);
+  notificationMesageElement = notificationMessage;
+  document.addEventListener('click', onCloseNotification);
+  document.addEventListener('keydown', onCloseNotification);
+  if (notificationMesageElement.className.includes('success')) {
+    onButtonFormCloseClick();
+  } else if (notificationMesageElement.className.includes('error')){
+    document.removeEventListener('keydown', onEscapeCloseForm);
+  }
+  return notificationMesageElement;
+};
+
 const addListeners = () => {
   newPicureCancelButton.addEventListener('click', onButtonFormCloseClick);
   document.addEventListener('keydown', onEscapeCloseForm);
@@ -86,4 +99,4 @@ const renderNewPictureForm = () => uploadFileButton.addEventListener('input', ()
   addListeners();
 });
 
-export {renderNewPictureForm, onButtonFormCloseClick, onEscapeCloseForm, removeListeners};
+export {renderNewPictureForm, onButtonFormCloseClick, onEscapeCloseForm, removeListeners, showUploadingMessage};

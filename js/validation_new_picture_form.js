@@ -2,7 +2,7 @@ import {MAX_COMMENT_LENGTH, MAX_HASHTAGS_QUANTITY, REG_EXP_HASHTAG,
   ERROR_MESSAGE_COMMENT_CORRECT, ERROR_MESSAGE_HASHTAGS_CORRECT, ERROR_MESSAGE_HASHTAGS_LENGTH,
   ERROR_MESSAGE_HASHTAGS_UNIQUE} from './data.js';
 import {sendData} from './api.js';
-import {onButtonFormCloseClick, onEscapeCloseForm, removeListeners} from './new_picture_form.js';
+import {onEscapeCloseForm, removeListeners, showUploadingMessage} from './new_picture_form.js';
 import {isEscapeKey} from './utils.js';
 
 const newPictureForm = document.querySelector('.img-upload__form');
@@ -44,6 +44,26 @@ const blockSubmitButton = (buttonState) => {
   }
 };
 
+const onSubmitForm = (evt) => {
+  evt.preventDefault();
+  if (pristine.validate()) {
+    blockSubmitButton (true);
+    sendData(new FormData(evt.target))
+      .then((response) => {
+        if (response) {
+          notificationMesageElement = showUploadingMessage (successUploadingMessage);
+        }
+      })
+      .catch(
+        () => {
+          notificationMesageElement = showUploadingMessage (errorUploadingMessage);
+        }
+      )
+      .finally(blockSubmitButton (false));
+  }
+};
+
+
 const onCloseNotification = (evt) => {
   const checkClassName = () => evt.target.className.includes('error') || evt.target.className.includes('success');
   if (isEscapeKey(evt) || checkClassName()) {
@@ -52,37 +72,7 @@ const onCloseNotification = (evt) => {
   }
   if (notificationMesageElement.className.includes('error')){
     document.addEventListener('keydown', onEscapeCloseForm);
-  }
-};
-
-const showUploadingMessage = (notificationMessage) => {
-  document.body.appendChild(notificationMessage);
-  notificationMesageElement = notificationMessage;
-  document.addEventListener('click', onCloseNotification);
-  document.addEventListener('keydown', onCloseNotification);
-  if (notificationMesageElement.className.includes('success')) {
-    onButtonFormCloseClick();
-  } else if (notificationMesageElement.className.includes('error')){
-    document.removeEventListener('keydown', onEscapeCloseForm);
-  }
-};
-
-const onSubmitForm = (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    blockSubmitButton (true);
-    sendData(new FormData(evt.target))
-      .then((response) => {
-        if (response) {
-          showUploadingMessage (successUploadingMessage);
-        }
-      })
-      .catch(
-        () => {
-          showUploadingMessage (errorUploadingMessage);
-        }
-      )
-      .finally(blockSubmitButton (false));
+    newPictureForm.addEventListener('submit', onSubmitForm);
   }
 };
 
