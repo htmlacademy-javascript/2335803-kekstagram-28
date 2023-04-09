@@ -63,6 +63,7 @@ const onSubmitForm = (evt) => {
   }
 };
 
+
 const onCloseNotification = (evt) => {
   const checkClassName = () => evt.target.className.includes('error') || evt.target.className.includes('success');
   if (isEscapeKey(evt) || checkClassName()) {
